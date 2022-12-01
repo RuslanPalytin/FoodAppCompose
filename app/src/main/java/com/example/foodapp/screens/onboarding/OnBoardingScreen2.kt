@@ -1,4 +1,4 @@
-package com.example.foodapp.screens
+package com.example.foodapp.screens.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.foodapp.R
-import com.example.foodapp.navigation.Screen
+import com.example.foodapp.navigation.OnBoardingScreen
 import com.example.foodapp.ui.theme.Italiano
 import com.example.foodapp.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -43,7 +43,7 @@ fun OnBoardingScreen2(navController: NavHostController) {
         Spacer(modifier = Modifier.height(40.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
             Button(
-                onClick = { navController.navigate(Screen.LoginScreen.route) },
+                onClick = { navController.navigate(OnBoardingScreen.LoginScreen.route) },
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
                     .height(70.dp)
@@ -55,7 +55,7 @@ fun OnBoardingScreen2(navController: NavHostController) {
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(
-                onClick = { navController.navigate(Screen.RegisterScreen.route) },
+                onClick = { navController.navigate(OnBoardingScreen.RegisterScreen.route) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
