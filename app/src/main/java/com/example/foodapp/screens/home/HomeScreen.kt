@@ -4,11 +4,11 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -23,13 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.foodapp.R
 import com.example.foodapp.api.ApiService
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.storage.SharedPreference
@@ -47,7 +45,7 @@ fun HomeScreen() {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(GrayLite1)
     var search by remember { mutableStateOf("") }
-    val foodList = remember { mutableStateOf<List<FoodModel>?>(null)}
+    var listFood: List<FoodModel> by remember { mutableStateOf(listOf()) }
     val context = LocalContext.current
 
     Column(
@@ -100,23 +98,17 @@ fun HomeScreen() {
             }
         }
 
-        //Log.d("MyLog", getListFoods(context).toString())
-        val token = SharedPreference(context)
-
-        Log.d("MyLog", token.readToken())
-
-        foodList.value = getListFoods(context = context).value
-        Log.d("MyLog", getListFoods(context = context).value.toString())
-
+        listFood = getListFoods(context = context)
 
         LazyVerticalGrid(
+            modifier = Modifier.padding(top = 10.dp),
             cells = GridCells.Fixed(2),
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(30.dp),
             content = {
-                items(foodList.value!!.size){ item ->
-                    ItemFood(foodList.value!!, item)
+                itemsIndexed(items = listFood) { index, item ->
+                    ItemFood(item)
                 }
             }
         )
@@ -130,7 +122,7 @@ fun HomeScreenPreview() {
 }
 
 @Composable
-fun ItemFood(item: List<FoodModel>, position: Int) {
+fun ItemFood(item: FoodModel) {
     Box(
         modifier = Modifier
             .height(270.dp)
@@ -140,59 +132,55 @@ fun ItemFood(item: List<FoodModel>, position: Int) {
         Card(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 50.dp),
+                .padding(top = 45.dp, bottom = 15.dp),
             shape = RoundedCornerShape(24.dp),
             backgroundColor = Color.White,
-            elevation = 3.dp
+            elevation = 20.dp
         ) {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = CenterHorizontally) {
                 Spacer(modifier = Modifier.height(100.dp))
-                Text(text = item[position].name, fontSize = 20.sp, textAlign = TextAlign.Center)
+                Text(text = item.name, fontSize = 20.sp, textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(30.dp))
-                Text(text = item[position].price, color = Orange)
+                Text(text = item.price, color = Orange)
             }
         }
-
-        AsyncImage(
-            model = item[position].icon,
-            contentDescription = null,
-            modifier = Modifier
-                .clip(shape = CircleShape)
-                .align(TopCenter)
-                .size(130.dp)
-        )
+        Box(modifier = Modifier
+            .clip(shape = CircleShape)
+            .align(TopCenter)
+            .size(130.dp)
+        ) {
+            AsyncImage(
+                model = item.icon,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ItemFoodPreview() {
-    //ItemFood()
-}
+fun getListFoods(context: Context): List<FoodModel> {
 
-@Composable
-fun getListFoods(context: Context): MutableState<List<FoodModel>?>{
-
-    val _foodList = remember { mutableStateOf<List<FoodModel>?>(null)}
-    //var foodList = _foodList.value
+    var foodList: List<FoodModel> by remember { mutableStateOf(listOf()) }
     val token = SharedPreference(context)
 
-    //Log.d("MyLog", token.readToken())
-
-    ApiService.retrofit.getFoods("Bearer ${token.readToken()}", "1.0").enqueue(object: Callback<List<FoodModel>>{
-        override fun onResponse(call: Call<List<FoodModel>>, response: Response<List<FoodModel>>) {
-            if(response.isSuccessful) {
-                _foodList.value = response.body()
-                Log.d("MyLog", _foodList.value.toString())
-            }else {
-                Log.d("MyLog", "Error ${response.code()}")
-                Toast.makeText(context, "Error ${response.code()}", Toast.LENGTH_SHORT).show()
+    ApiService.retrofit.getFoods("Bearer ${token.readToken()}", "1.0")
+        .enqueue(object : Callback<List<FoodModel>> {
+            override fun onResponse(
+                call: Call<List<FoodModel>>,
+                response: Response<List<FoodModel>>
+            ) {
+                if (response.isSuccessful) {
+                    foodList = response.body()!!
+                } else {
+                    Toast.makeText(context, "Error ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
 
-        override fun onFailure(call: Call<List<FoodModel>>, t: Throwable) {
-            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-        }
-    })
-    return _foodList
+            override fun onFailure(call: Call<List<FoodModel>>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    return foodList
 }
