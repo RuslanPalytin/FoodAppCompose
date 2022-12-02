@@ -1,4 +1,6 @@
 package com.example.foodapp.data
 
-class LoginUserModel {
-}
+data class LoginUserModel (
+    val email: String,
+    val password: String
+)

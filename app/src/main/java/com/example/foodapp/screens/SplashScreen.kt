@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,7 +18,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.foodapp.R
+import com.example.foodapp.graphs.Graph
+import com.example.foodapp.navigation.BottomBarScreen
 import com.example.foodapp.navigation.OnBoardingScreen
+import com.example.foodapp.storage.SharedPreference
 import com.example.foodapp.ui.theme.Italiano
 import com.example.foodapp.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -28,6 +32,7 @@ fun SplashScreen(navController: NavHostController) {
 
     val systemUiController = rememberSystemUiController()
     systemUiController.isStatusBarVisible = false
+    val token = SharedPreference(LocalContext.current)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -73,7 +78,11 @@ fun SplashScreen(navController: NavHostController) {
     }
     LaunchedEffect(key1 = true) {
         delay(1000)
-        navController.navigate(OnBoardingScreen.OnBoarding.route)
+        if(token.readToken() == ""){
+            navController.navigate(OnBoardingScreen.OnBoarding.route)
+        } else {
+            navController.navigate(Graph.HOME)
+        }
     }
 }
 
