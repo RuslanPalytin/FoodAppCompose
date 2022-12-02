@@ -4,11 +4,13 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.foodapp.graphs.HomeNavigationGraph
 import com.example.foodapp.navigation.BottomBarScreen
+import com.example.foodapp.ui.theme.GrayLite1
 import com.example.foodapp.ui.theme.GrayLite2
 import com.example.foodapp.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -38,7 +40,7 @@ fun BottomBar(navController: NavHostController) {
     )
 
     BottomNavigation(
-        backgroundColor = GrayLite2
+        backgroundColor = GrayLite1
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -47,7 +49,7 @@ fun BottomBar(navController: NavHostController) {
         if (bottomBarDestination) {
             items.forEach { item ->
                 BottomNavigationItem(
-                    icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
+                    icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.title) },
                     selectedContentColor = Orange,
                     unselectedContentColor = Color.Gray,
                     selected = currentRoute == item.route,

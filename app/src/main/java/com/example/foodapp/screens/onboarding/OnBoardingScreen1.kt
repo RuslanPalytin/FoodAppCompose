@@ -40,7 +40,6 @@ fun OnBoardingScreen1() {
             textAlign = TextAlign.Center,
             fontSize = 40.sp,
             fontFamily = NutinoRegular,
-            fontWeight = FontWeight.Bold
         )
     }
 }

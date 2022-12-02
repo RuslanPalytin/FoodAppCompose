@@ -30,3 +30,4 @@ val Typography = Typography(
 )
 val Italiano = FontFamily(Font(R.font.italiano))
 val NutinoRegular = FontFamily(Font(R.font.nunito_regular))
+val Roboto = FontFamily(Font(R.font.roboto_regular))

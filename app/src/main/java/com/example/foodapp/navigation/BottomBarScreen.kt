@@ -1,15 +1,11 @@
 package com.example.foodapp.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import com.example.foodapp.R
 
-sealed class BottomBarScreen(var route: String, var icon: ImageVector, var title: String){
-    object Home: BottomBarScreen(route = "home", icon = Icons.Default.Home, title = "Home")
-    object Shop: BottomBarScreen(route = "shop", icon = Icons.Default.ShoppingCart, title = "Shop")
-    object Person: BottomBarScreen(route = "person", icon = Icons.Default.Person, title = "Person")
-    object History: BottomBarScreen(route = "history", icon = Icons.Default.Info, title = "History")
+sealed class BottomBarScreen(var route: String, @DrawableRes var icon: Int, var title: String){
+    object Home: BottomBarScreen(route = "home", icon = R.drawable.ic_home, title = "Home")
+    object Shop: BottomBarScreen(route = "shop", icon = R.drawable.ic_shop, title = "Shop")
+    object Person: BottomBarScreen(route = "person", icon = R.drawable.ic_person, title = "Person")
+    object History: BottomBarScreen(route = "history", icon = R.drawable.ic_history, title = "History")
 }

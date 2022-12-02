@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.foodapp.ui.theme.GrayLite1
@@ -33,6 +34,7 @@ import com.example.foodapp.data.LoginUserModel
 import com.example.foodapp.data.Token
 import com.example.foodapp.graphs.Graph
 import com.example.foodapp.storage.SharedPreference
+import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import retrofit2.Call
@@ -76,14 +78,21 @@ fun LoginScreen(navController: NavHostController) {
                 .padding(horizontal = 25.dp)
                 .padding(top = 70.dp)
         ) {
-            Text(text = "E-mail", color = Color.Gray)
+            Text(text = "E-mail", color = Color.Gray, fontFamily = NutinoRegular, fontSize = 15.sp)
             TextField(
                 modifier = Modifier
                     .fillMaxWidth(),
                 value = loginEmail,
                 onValueChange = { newText -> loginEmail = newText },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                placeholder = { Text(text = "E-mail", modifier = Modifier.offset(x = (-16).dp)) },
+                placeholder = {
+                    Text(
+                        text = "E-mail",
+                        fontFamily = NutinoRegular,
+                        fontSize = 17.sp,
+                        modifier = Modifier.offset(x = (-16).dp)
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = GrayLite1,
                     unfocusedIndicatorColor = Color.Gray,
@@ -93,14 +102,26 @@ fun LoginScreen(navController: NavHostController) {
                 singleLine = true
             )
             Spacer(modifier = Modifier.height(30.dp))
-            Text(text = "Password", color = Color.Gray)
+            Text(
+                text = "Password",
+                color = Color.Gray,
+                fontFamily = NutinoRegular,
+                fontSize = 15.sp
+            )
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = loginPassword,
 
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = { newText -> loginPassword = newText },
-                placeholder = { Text(text = "Password", modifier = Modifier.offset(x = (-16).dp)) },
+                placeholder = {
+                    Text(
+                        text = "Password",
+                        fontFamily = NutinoRegular,
+                        fontSize = 17.sp,
+                        modifier = Modifier.offset(x = (-16).dp)
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = GrayLite1,
                     unfocusedIndicatorColor = Color.Gray,
@@ -111,7 +132,12 @@ fun LoginScreen(navController: NavHostController) {
                 visualTransformation = PasswordVisualTransformation()
             )
             Spacer(modifier = Modifier.height(50.dp))
-            Text(text = "Forgot Password?", color = Orange)
+            Text(
+                text = "Forgot Password?",
+                fontSize = 17.sp,
+                fontFamily = NutinoRegular,
+                color = Orange
+            )
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
                 Button(
                     enabled = isActiveClickButton,
@@ -130,10 +156,17 @@ fun LoginScreen(navController: NavHostController) {
                     shape = RoundedCornerShape(30.dp)
                 ) {
 
-                    if (Patterns.EMAIL_ADDRESS.matcher(loginEmail).matches() && loginPassword.length > 8)
+                    if (Patterns.EMAIL_ADDRESS.matcher(loginEmail)
+                            .matches() && loginPassword.length > 8
+                    )
                         isActiveClickButton = true
 
-                    Text(text = "Login", color = Color.White)
+                    Text(
+                        text = "Login",
+                        fontFamily = NutinoRegular,
+                        fontSize = 17.sp,
+                        color = Color.White
+                    )
                 }
             }
         }
@@ -144,9 +177,9 @@ fun loginUser(loginUser: LoginUserModel, navController: NavHostController, conte
 
     val token = SharedPreference(context)
 
-    ApiService.retrofit.loginUser(loginUser).enqueue(object : Callback<Token>{
+    ApiService.retrofit.loginUser(loginUser).enqueue(object : Callback<Token> {
         override fun onResponse(call: Call<Token>, response: Response<Token>) {
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 navController.popBackStack()
                 navController.navigate(Graph.HOME)
                 token.saveToken(response.body()?.access_token.toString())
@@ -155,6 +188,7 @@ fun loginUser(loginUser: LoginUserModel, navController: NavHostController, conte
                 Toast.makeText(context, "Error code: ${response.code()}", Toast.LENGTH_SHORT).show()
             }
         }
+
         override fun onFailure(call: Call<Token>, t: Throwable) {
             Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
         }

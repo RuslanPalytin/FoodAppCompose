@@ -23,16 +23,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.foodapp.R
 import com.example.foodapp.api.ApiService
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.storage.SharedPreference
 import com.example.foodapp.ui.theme.GrayLite1
+import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
+import com.example.foodapp.ui.theme.Roboto
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import retrofit2.Call
 import retrofit2.Callback
@@ -64,6 +68,7 @@ fun HomeScreen() {
                     Text(
                         text = "Выберите адрес доставки",
                         color = Color.Gray,
+                        fontFamily = Roboto,
                         fontSize = 18.sp
                     )
                 },
@@ -79,20 +84,20 @@ fun HomeScreen() {
                 verticalAlignment = CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.LocationOn,
+                    painter = painterResource(id = R.drawable.ic_navigate),
                     contentDescription = null,
                     modifier = Modifier
                         .align(CenterVertically)
-                        .size(40.dp),
+                        .size(24.dp),
                     tint = Color.Gray
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Icon(
-                    imageVector = Icons.Default.Search,
+                    painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = null,
                     modifier = Modifier
                         .align(CenterVertically)
-                        .size(40.dp),
+                        .size(24.dp),
                     tint = Color.Gray
                 )
             }
@@ -138,21 +143,29 @@ fun ItemFood(item: FoodModel) {
             elevation = 20.dp
         ) {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = CenterHorizontally) {
-                Spacer(modifier = Modifier.height(100.dp))
-                Text(text = item.name, fontSize = 20.sp, textAlign = TextAlign.Center)
-                Spacer(modifier = Modifier.height(30.dp))
-                Text(text = item.price, color = Orange)
+                Spacer(modifier = Modifier.height(90.dp))
+                Text(
+                    text = item.name,
+                    fontSize = 22.sp,
+                    fontFamily = NutinoRegular,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2
+                )
+                Spacer(modifier = Modifier.height(25.dp))
+                Text(text = item.price, fontSize = 17.sp, fontFamily = Roboto, color = Orange)
             }
         }
-        Box(modifier = Modifier
-            .clip(shape = CircleShape)
-            .align(TopCenter)
-            .size(130.dp)
+        Card(
+            modifier = Modifier
+                .clip(shape = CircleShape)
+                .align(TopCenter)
+                .size(130.dp),
+            backgroundColor = Color.White,
+            elevation = 70.dp
         ) {
             AsyncImage(
                 model = item.icon,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize()
             )
         }
     }

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.foodapp.R
@@ -76,13 +77,19 @@ fun RegisterScreen(navController: NavHostController) {
                 .padding(horizontal = 25.dp)
                 .padding(top = 15.dp)
         ) {
-            Text(text = "E-mail", color = Color.Gray)
+            Text(text = "E-mail", color = Color.Gray, fontSize = 15.sp)
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = registerEmail,
                 onValueChange = { newText -> registerEmail = newText },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                placeholder = { Text(text = "E-mail", modifier = Modifier.offset(x = (-16).dp)) },
+                placeholder = {
+                    Text(
+                        text = "E-mail",
+                        fontSize = 17.sp,
+                        modifier = Modifier.offset(x = (-16).dp)
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = GrayLite1,
                     unfocusedIndicatorColor = Color.Gray,
@@ -92,13 +99,19 @@ fun RegisterScreen(navController: NavHostController) {
                 singleLine = true,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Password", color = Color.Gray)
+            Text(text = "Password", color = Color.Gray, fontSize = 15.sp)
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = registerPassword,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = { newText -> registerPassword = newText },
-                placeholder = { Text(text = "Password", modifier = Modifier.offset(x = (-16).dp)) },
+                placeholder = {
+                    Text(
+                        text = "Password",
+                        fontSize = 17.sp,
+                        modifier = Modifier.offset(x = (-16).dp)
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = GrayLite1,
                     unfocusedIndicatorColor = Color.Gray,
@@ -109,13 +122,19 @@ fun RegisterScreen(navController: NavHostController) {
                 singleLine = true,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Full name", color = Color.Gray)
+            Text(text = "Full name", color = Color.Gray, fontSize = 15.sp)
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = registerFullName,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = { newText -> registerFullName = newText },
-                placeholder = { Text(text = "Full name", modifier = Modifier.offset(x = (-16).dp)) },
+                placeholder = {
+                    Text(
+                        text = "Full name",
+                        fontSize = 17.sp,
+                        modifier = Modifier.offset(x = (-16).dp)
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = GrayLite1,
                     unfocusedIndicatorColor = Color.Gray,
@@ -125,13 +144,19 @@ fun RegisterScreen(navController: NavHostController) {
                 singleLine = true,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Phone number", color = Color.Gray)
+            Text(text = "Phone number", color = Color.Gray, fontSize = 15.sp)
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = registerPhoneNumber,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { newText -> registerPhoneNumber = newText },
-                placeholder = { Text(text = "Phone number", modifier = Modifier.offset(x = (-16).dp)) },
+                placeholder = {
+                    Text(
+                        text = "Phone number",
+                        fontSize = 17.sp,
+                        modifier = Modifier.offset(x = (-16).dp)
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = GrayLite1,
                     unfocusedIndicatorColor = Color.Gray,
@@ -168,7 +193,7 @@ fun RegisterScreen(navController: NavHostController) {
                             isActiveClickButton = true
                         }
 
-                        Text(text = "Register Now", color = Color.White)
+                        Text(text = "Register Now", fontSize = 17.sp, color = Color.White)
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Button(
@@ -183,7 +208,7 @@ fun RegisterScreen(navController: NavHostController) {
                         shape = RoundedCornerShape(30.dp)
                     ) {
 
-                        Text(text = "Cancel", color = Color.White)
+                        Text(text = "Cancel", fontSize = 17.sp, color = Color.White)
                     }
                 }
             }
@@ -192,24 +217,29 @@ fun RegisterScreen(navController: NavHostController) {
 }
 
 fun createUser(
-   registerUser: RegisterUserModel,
+    registerUser: RegisterUserModel,
     navController: NavHostController,
     context: Context
 ) {
 
     val token = SharedPreference(context)
 
-    ApiService.retrofit.createUser(registerUser).enqueue(object: Callback<Token>{
+    ApiService.retrofit.createUser(registerUser).enqueue(object : Callback<Token> {
         override fun onResponse(call: Call<Token>, response: Response<Token>) {
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 navController.popBackStack()
                 navController.navigate(Graph.HOME)
                 token.saveToken(response.body()?.access_token.toString())
-                Toast.makeText(context, "Token: ${response.body()?.access_token}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Token: ${response.body()?.access_token}",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 Toast.makeText(context, "Error code: ${response.code()}", Toast.LENGTH_SHORT).show()
             }
         }
+
         override fun onFailure(call: Call<Token>, t: Throwable) {
             Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
         }
