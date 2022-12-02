@@ -1,4 +1,4 @@
-package com.example.foodapp.screens
+package com.example.foodapp.screens.authorization
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

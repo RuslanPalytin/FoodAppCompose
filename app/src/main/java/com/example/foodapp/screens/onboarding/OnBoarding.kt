@@ -1,4 +1,4 @@
-package com.example.foodapp.screens
+package com.example.foodapp.screens.onboarding
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

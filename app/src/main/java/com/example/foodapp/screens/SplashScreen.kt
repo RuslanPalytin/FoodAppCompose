@@ -1,35 +1,30 @@
 package com.example.foodapp.screens
 
-import android.widget.ProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.foodapp.R
-import com.example.foodapp.navigation.Screen
+import com.example.foodapp.navigation.OnBoardingScreen
 import com.example.foodapp.ui.theme.Italiano
 import com.example.foodapp.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
 
 @Composable
-fun LaunchScreen(navController: NavHostController) {
+fun SplashScreen(navController: NavHostController) {
 
     val systemUiController = rememberSystemUiController()
     systemUiController.isStatusBarVisible = false
@@ -78,12 +73,12 @@ fun LaunchScreen(navController: NavHostController) {
     }
     LaunchedEffect(key1 = true) {
         delay(1000)
-        navController.navigate(Screen.OnBoarding.route)
+        navController.navigate(OnBoardingScreen.OnBoarding.route)
     }
 }
 
 @Preview
 @Composable
 fun efwefg() {
-    LaunchScreen(navController = rememberNavController())
+    SplashScreen(navController = rememberNavController())
 }
