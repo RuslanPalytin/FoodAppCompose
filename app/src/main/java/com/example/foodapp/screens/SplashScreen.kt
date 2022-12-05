@@ -85,9 +85,3 @@ fun SplashScreen(navController: NavHostController) {
         }
     }
 }
-
-@Preview
-@Composable
-fun efwefg() {
-    SplashScreen(navController = rememberNavController())
-}

@@ -1,10 +1,12 @@
-package com.example.foodapp.screens.home
+package com.example.foodapp.screens.main.home
 
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -12,10 +14,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.TopCenter
@@ -37,73 +37,104 @@ import com.example.foodapp.ui.theme.GrayLite1
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 import com.example.foodapp.ui.theme.Roboto
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen() {
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(GrayLite1)
+
     var search by remember { mutableStateOf("") }
-    var listFood: List<FoodModel> by remember { mutableStateOf(listOf()) }
     val context = LocalContext.current
+    var _foodList: List<FoodModel> by remember { mutableStateOf(listOf()) }
+    var visibilityIcons by remember { mutableStateOf(true) }
+    val foodList = _foodList
+    var _category: List<FoodModel> by remember { mutableStateOf(listOf()) }
+    val category = _category
+    val pagerState = rememberPagerState()
+
+    _foodList = getListFoods(context = context)
+    _category = _foodList.distinctBy { it.category }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = GrayLite1)
             .padding(horizontal = 5.dp)
-            .padding(top = 5.dp, bottom = 55.dp)
+            .padding(top = 25.dp, bottom = 55.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = CenterVertically) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+                .clip(shape = RoundedCornerShape(30.dp))
+                .background(color = if (visibilityIcons) GrayLite1 else Color.White),
+            verticalAlignment = CenterVertically
+        ) {
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(0.7f),
+                modifier = Modifier.fillMaxWidth(0.75f),
                 value = search,
                 onValueChange = { newText -> search = newText },
                 placeholder = {
                     Text(
-                        text = "Выберите адрес доставки",
+                        text = if(visibilityIcons) "Выберите адрес доставки" else "Search",
                         color = Color.Gray,
                         fontFamily = Roboto,
                         fontSize = 18.sp
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = GrayLite1,
-                    focusedIndicatorColor = GrayLite1,
-                    unfocusedIndicatorColor = GrayLite1
+                    backgroundColor = if (visibilityIcons) GrayLite1 else Color.White,
+                    focusedIndicatorColor = if (visibilityIcons) GrayLite1 else Color.White,
+                    unfocusedIndicatorColor = if (visibilityIcons) GrayLite1 else Color.White
                 )
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = CenterVertically
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_navigate),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(CenterVertically)
-                        .size(24.dp),
-                    tint = Color.Gray
-                )
-                Spacer(modifier = Modifier.width(10.dp))
+                AnimatedVisibility(visible = visibilityIcons) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_navigate),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(CenterVertically)
+                            .size(24.dp),
+                        tint = Color.Gray,
+                    )
+                }
+                AnimatedVisibility(visible = !visibilityIcons) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_cancel),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(CenterVertically)
+                            .size(34.dp),
+                        tint = Color.Gray
+                    )
+                }
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = null,
                     modifier = Modifier
                         .align(CenterVertically)
-                        .size(24.dp),
+                        .size(24.dp)
+                        .clickable {
+                            visibilityIcons = !visibilityIcons
+                        },
                     tint = Color.Gray
                 )
+                Spacer(modifier = Modifier.width(25.dp))
             }
         }
-
-        listFood = getListFoods(context = context)
 
         LazyVerticalGrid(
             modifier = Modifier.padding(top = 10.dp),
@@ -112,18 +143,23 @@ fun HomeScreen() {
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(30.dp),
             content = {
-                itemsIndexed(items = listFood) { index, item ->
+                itemsIndexed(items = foodList) { index, item ->
                     ItemFood(item)
                 }
             }
         )
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
+        Spacer(modifier = Modifier.width(30.dp))
+
+        Scaffold(
+            modifier = Modifier.fillMaxWidth()
+        ) { padding ->
+            Column(modifier = Modifier.padding(padding)) {
+                //Tabs(tabs = category, pagerState = pagerState)
+                //TabsContent(tabs = category, pagerState = pagerState)
+            }
+        }
+    }
 }
 
 @Composable
@@ -174,7 +210,10 @@ fun ItemFood(item: FoodModel) {
 @Composable
 fun getListFoods(context: Context): List<FoodModel> {
 
-    var foodList: List<FoodModel> by remember { mutableStateOf(listOf()) }
+    var _foodList: List<FoodModel> by remember { mutableStateOf(listOf()) }
+    var foodList = _foodList
+
+    //var foodList: List<FoodModel> by remember { mutableStateOf(listOf()) }
     val token = SharedPreference(context)
 
     ApiService.retrofit.getFoods("Bearer ${token.readToken()}", "1.0")
@@ -184,7 +223,8 @@ fun getListFoods(context: Context): List<FoodModel> {
                 response: Response<List<FoodModel>>
             ) {
                 if (response.isSuccessful) {
-                    foodList = response.body()!!
+                    Log.d("MyLog", "Response:" + response.body()!!.toString())
+                    _foodList = response.body()!!
                 } else {
                     Toast.makeText(context, "Error ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
@@ -194,6 +234,9 @@ fun getListFoods(context: Context): List<FoodModel> {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+
+    Log.d("MyLog", "getlist: $_foodList")
+    Log.d("MyLog", "getlist2: $foodList")
 
     return foodList
 }

@@ -5,10 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.foodapp.navigation.BottomBarScreen
-import com.example.foodapp.screens.home.HistoryScreen
-import com.example.foodapp.screens.home.HomeScreen
-import com.example.foodapp.screens.home.PersonScreen
-import com.example.foodapp.screens.home.ShopScreen
+import com.example.foodapp.screens.main.history.HistoryScreen
+import com.example.foodapp.screens.main.home.HomeScreen
+import com.example.foodapp.screens.main.person.PersonScreen
+import com.example.foodapp.screens.main.shop.ShopScreen
 
 @Composable
 fun HomeNavigationGraph(navController: NavHostController) {

@@ -1,4 +1,4 @@
-package com.example.foodapp.screens.home
+package com.example.foodapp.screens.main.person
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

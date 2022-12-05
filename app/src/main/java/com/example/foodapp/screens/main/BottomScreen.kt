@@ -1,4 +1,4 @@
-package com.example.foodapp.screens.home
+package com.example.foodapp.screens.main
 
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
