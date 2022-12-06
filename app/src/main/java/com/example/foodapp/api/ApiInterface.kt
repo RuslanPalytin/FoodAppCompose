@@ -26,5 +26,5 @@ interface ApiInterface {
     fun getFoods(
         @Header("Authorization") token: String,
         @Query("version") version: String,
-    ): Call<List<FoodModel>>
+    ): Call<List<FoodModel>?>?
 }

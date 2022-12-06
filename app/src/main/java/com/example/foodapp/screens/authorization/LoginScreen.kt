@@ -183,7 +183,6 @@ fun loginUser(loginUser: LoginUserModel, navController: NavHostController, conte
                 navController.popBackStack()
                 navController.navigate(Graph.HOME)
                 token.saveToken(response.body()?.access_token.toString())
-                Toast.makeText(context, "Token: ${token.readToken()}", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Error code: ${response.code()}", Toast.LENGTH_SHORT).show()
             }
