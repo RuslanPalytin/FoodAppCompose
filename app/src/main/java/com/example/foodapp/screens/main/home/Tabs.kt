@@ -1,9 +1,7 @@
 package com.example.foodapp.screens.main.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -28,14 +26,18 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Tabs(tabs: List<FoodModel>, pagerState: PagerState, search: MutableState<String>) {
+fun Tabs(
+    tabs: List<FoodModel>,
+    pagerState: PagerState,
+    search: MutableState<String>,
+    isVisible: MutableState<Boolean>,
+) {
 
-    val isVisible = remember { mutableStateOf(true) }
+    val isVisibleResult = remember { mutableStateOf((search.value == "") || !isVisible.value) }
     val scope = rememberCoroutineScope()
+    isVisibleResult.value = (search.value == "") || isVisible.value
 
-    isVisible.value = search.value == ""
-
-    if (isVisible.value) {
+    if (isVisibleResult.value) {
         TabRow(
             modifier = Modifier
                 .background(color = GrayLite1)
@@ -75,15 +77,18 @@ fun Tabs(tabs: List<FoodModel>, pagerState: PagerState, search: MutableState<Str
                 )
             }
         }
-    } else {
-        Text(
-            text = "Result",
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = GrayLite1)
-                .padding(start = 16.dp),
-            fontFamily = Italiano,
-            fontSize = 48.sp
-        )
+    } else  {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Result",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = GrayLite1)
+                    .padding(start = 16.dp),
+                fontFamily = Italiano,
+                fontSize = 48.sp
+            )
+            SearchResult(search)
+        }
     }
 }
