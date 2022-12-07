@@ -112,9 +112,7 @@ fun SelectedItemScreen() {
                         shape = RoundedCornerShape(6.dp)
                     ) {
 
-                        if(count.value < 1){
-                            decItem.value = false
-                        }
+                        decItem.value = count.value > 1
 
                         Icon(
                             modifier = Modifier
