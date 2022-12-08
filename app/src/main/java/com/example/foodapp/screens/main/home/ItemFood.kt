@@ -3,6 +3,7 @@ package com.example.foodapp.screens.main.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -28,6 +29,9 @@ fun ItemFood(item: FoodModel) {
             .height(270.dp)
             .width(150.dp)
             .background(color = Color.Transparent)
+            .selectable(selected = true, onClick = {
+                
+            })
     ) {
         Card(
             modifier = Modifier
