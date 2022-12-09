@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.ui.theme.GrayLite1
 import com.example.foodapp.ui.theme.Italiano
@@ -31,6 +32,7 @@ fun Tabs(
     pagerState: PagerState,
     search: MutableState<String>,
     isVisible: MutableState<Boolean>,
+    navController: NavHostController,
 ) {
 
     val isVisibleResult = remember { mutableStateOf((search.value == "") || !isVisible.value) }
@@ -88,7 +90,7 @@ fun Tabs(
                 fontFamily = Italiano,
                 fontSize = 48.sp
             )
-            SearchResult(search)
+            SearchResult(search, navController)
         }
     }
 }

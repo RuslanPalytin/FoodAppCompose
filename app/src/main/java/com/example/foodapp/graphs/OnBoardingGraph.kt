@@ -15,22 +15,22 @@ import com.example.foodapp.screens.authorization.RegisterScreen
 fun NavGraphBuilder.onBoardingGraph(navController: NavHostController) {
     navigation(route = Graph.ON_BOARDING, startDestination = OnBoardingScreen.SplashScreen.route) {
 
-        composable(OnBoardingScreen.SplashScreen.route){
+        composable(OnBoardingScreen.SplashScreen.route) {
             SplashScreen(navController)
         }
-        composable(OnBoardingScreen.OnBoarding.route){
+        composable(OnBoardingScreen.OnBoarding.route) {
             OnBoarding(navController)
         }
-        composable(OnBoardingScreen.OnBoardingScreen1.route){
+        composable(OnBoardingScreen.OnBoardingScreen1.route) {
             OnBoardingScreen1()
         }
-        composable(OnBoardingScreen.OnBoardingScreen2.route){
+        composable(OnBoardingScreen.OnBoardingScreen2.route) {
             OnBoardingScreen2(navController)
         }
-        composable(OnBoardingScreen.RegisterScreen.route){
-           RegisterScreen(navController)
+        composable(OnBoardingScreen.RegisterScreen.route) {
+            RegisterScreen(navController)
         }
-        composable(OnBoardingScreen.LoginScreen.route){
+        composable(OnBoardingScreen.LoginScreen.route) {
             LoginScreen(navController)
         }
 

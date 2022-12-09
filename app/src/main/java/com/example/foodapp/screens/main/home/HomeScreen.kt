@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.ui.theme.GrayLite1
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -18,7 +19,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(GrayLite1)
@@ -42,8 +43,6 @@ fun HomeScreen() {
     ) {
         Search(search = search, isVisible = isVisible)
 
-        SelectedItemScreen()
-
         if (response.value != null) {
             Scaffold(
                 modifier = Modifier.fillMaxSize()
@@ -53,9 +52,10 @@ fun HomeScreen() {
                         tabs = category!!,
                         pagerState = pagerState,
                         search = search,
-                        isVisible = isVisible
+                        isVisible = isVisible,
+                        navController
                     )
-                    TabsContent(tabs = category, response = response, pagerState = pagerState)
+                    TabsContent(tabs = category, response = response, pagerState = pagerState, navController)
                 }
             }
         }
@@ -66,7 +66,7 @@ fun HomeScreen() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ShowFoodList(list: List<FoodModel>) {
+fun ShowFoodList(list: List<FoodModel>, navController: NavHostController) {
     LazyVerticalGrid(
         modifier = Modifier.padding(top = 10.dp),
         cells = GridCells.Fixed(2),
@@ -75,7 +75,7 @@ fun ShowFoodList(list: List<FoodModel>) {
         verticalArrangement = Arrangement.spacedBy(30.dp),
     ) {
         items(list.size) { index ->
-            ItemFood(item = list[index])
+            ItemFood(item = list[index], navController = navController)
         }
     }
 }

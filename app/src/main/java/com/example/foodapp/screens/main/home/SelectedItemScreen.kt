@@ -1,6 +1,7 @@
 package com.example.foodapp.screens.main.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,162 +19,183 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import androidx.navigation.NavHostController
 import com.example.foodapp.R
+import com.example.foodapp.navigation.ItemFoodScreen
 import com.example.foodapp.ui.theme.GrayLite3
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 
 @Composable
-fun SelectedItemScreen() {
+fun SelectedItemScreen(navController: NavHostController) {
 
     val count = remember { mutableStateOf(1) }
     val decItem = remember { mutableStateOf(true) }
 
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
-        shape = RoundedCornerShape(30.dp),
-        backgroundColor = Color.White,
-        elevation = 5.dp
+            .background(Color.Green)
+            .padding(top = 200.dp, bottom = 100.dp),
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp)
-                    .padding(horizontal = 25.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_selected_cancel),
-                    contentDescription = null
-                )
-                Text(text = "More", fontSize = 18.sp, fontFamily = NutinoRegular)
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Card(
-                    modifier = Modifier
-                        .clip(shape = CircleShape)
-                        .size(130.dp),
-                    backgroundColor = Color.White,
-                    elevation = 70.dp
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_tomato),
-                        contentDescription = null,
-                    )
-                }
-                Column(
-                    modifier = Modifier.height(150.dp),
-                    verticalArrangement = Arrangement.SpaceAround,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "Veggie tomato mix",
-                        fontFamily = NutinoRegular,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        text = "1900",
-                        color = Orange,
-                        fontFamily = NutinoRegular,
-                        fontSize = 20.sp
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(40.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-                    .padding(bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            shape = RoundedCornerShape(30.dp),
+            backgroundColor = Color.White,
+            elevation = 5.dp
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(0.3f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp)
+                        .padding(horizontal = 25.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_selected_cancel),
+                        contentDescription = null
+                    )
+                    Text(text = "More", fontSize = 18.sp, fontFamily = NutinoRegular)
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 15.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
                     Card(
-                        modifier = Modifier.size(28.dp),
-                        backgroundColor = GrayLite3,
-                        shape = RoundedCornerShape(6.dp)
+                        modifier = Modifier
+                            .clip(shape = CircleShape)
+                            .size(130.dp),
+                        backgroundColor = Color.White,
+                        elevation = 70.dp
                     ) {
-
-                        decItem.value = count.value > 1
-
-                        Icon(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .clickable(enabled = decItem.value, onClick = {
-                                    count.value--
-                                }),
-                            painter = painterResource(id = R.drawable.ic_minus),
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_tomato),
                             contentDescription = null,
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = count.value.toString(), color = Color.Gray, fontSize = 16.sp)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Card(
-                        modifier = Modifier.size(28.dp),
-                        backgroundColor = GrayLite3,
-                        shape = RoundedCornerShape(6.dp),
+                    Column(
+                        modifier = Modifier.height(150.dp),
+                        verticalArrangement = Arrangement.SpaceAround,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Icon(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .clickable {
-                                    count.value++
-                                },
-                            painter = painterResource(id = R.drawable.ic_plus),
-                            contentDescription = null,
+                        Text(
+                            text = "Veggie tomato mix",
+                            fontFamily = NutinoRegular,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = "1900",
+                            color = Orange,
+                            fontFamily = NutinoRegular,
+                            fontSize = 20.sp
                         )
                     }
                 }
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(40.dp)
-                            .padding(end = 15.dp),
-                        backgroundColor = Orange,
-                        shape = RoundedCornerShape(30.dp)
+                Spacer(modifier = Modifier.height(40.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp)
+                        .padding(bottom = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(0.3f),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
+                        Card(
+                            modifier = Modifier.size(28.dp),
+                            backgroundColor = GrayLite3,
+                            shape = RoundedCornerShape(6.dp)
+                        ) {
+
+                            decItem.value = count.value > 1
+
+                            Icon(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .clickable(enabled = decItem.value, onClick = {
+                                        count.value--
+                                    }),
+                                painter = painterResource(id = R.drawable.ic_minus),
+                                contentDescription = null,
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = count.value.toString(), color = Color.Gray, fontSize = 16.sp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Card(
+                            modifier = Modifier.size(28.dp),
+                            backgroundColor = GrayLite3,
+                            shape = RoundedCornerShape(6.dp),
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .clickable {
+                                        count.value++
+                                    },
+                                painter = painterResource(id = R.drawable.ic_plus),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 20.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .height(40.dp)
+                                .clickable {
+                                    navController.navigate(ItemFoodScreen.AddToCartItemFood.route)
+                                }
+                                .padding(end = 15.dp),
+                            backgroundColor = Orange,
+                            shape = RoundedCornerShape(30.dp)
                         ) {
-                            Text(
-                                text = "Add to cart",
-                                color = Color.White,
-                                fontSize = 17.sp,
-                                fontFamily = NutinoRegular
-                            )
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_shopping_cart),
-                                contentDescription = null,
-                                tint = Color.Black
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 20.dp)
+                                    .clickable {
+                                        navController.navigate(ItemFoodScreen.AddToCartItemFood.route)
+                                    },
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Add to cart",
+                                    color = Color.White,
+                                    fontSize = 17.sp,
+                                    fontFamily = NutinoRegular
+                                )
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_shopping_cart),
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                            }
                         }
                     }
                 }
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun asdmavs() {
+    //SelectedItemScreen(navController)
 }

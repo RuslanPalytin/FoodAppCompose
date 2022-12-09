@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.ui.theme.GrayLite1
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -16,7 +17,8 @@ import com.google.accompanist.pager.PagerState
 fun TabsContent(
     tabs: List<FoodModel>,
     response: MutableState<List<FoodModel>?>,
-    pagerState: PagerState
+    pagerState: PagerState,
+    navController: NavHostController
 ) {
     HorizontalPager(
         count = tabs.size,
@@ -31,6 +33,6 @@ fun TabsContent(
                 list.add(response.value!![i])
             }
         }
-        ShowFoodList(list = list)
+        ShowFoodList(list = list, navController)
     }
 }

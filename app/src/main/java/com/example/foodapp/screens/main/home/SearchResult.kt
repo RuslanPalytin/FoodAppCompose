@@ -11,12 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.ui.theme.GrayLite1
 import com.example.foodapp.ui.theme.NutinoRegular
 
 @Composable
-fun SearchResult(search: MutableState<String>) {
+fun SearchResult(search: MutableState<String>, navController: NavHostController) {
 
     val response = remember { mutableStateOf<List<FoodModel>?>(null) }
     val context = LocalContext.current
@@ -36,7 +37,7 @@ fun SearchResult(search: MutableState<String>) {
             }
 
         if (listFood.isNotEmpty()) {
-            ShowFoodList(list = listFood)
+            ShowFoodList(list = listFood, navController = navController)
         } else {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = "Empty", fontSize = 40.sp, fontFamily = NutinoRegular)
