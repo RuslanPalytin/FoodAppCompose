@@ -17,6 +17,7 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.HOME){
             BottomScreen()
         }
+        itemFoodGraph(navController)
     }
 }
 

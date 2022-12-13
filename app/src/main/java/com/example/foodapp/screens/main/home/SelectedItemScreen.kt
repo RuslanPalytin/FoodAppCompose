@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -62,7 +63,13 @@ fun SelectedItemScreen(navController: NavHostController) {
                         painter = painterResource(id = R.drawable.ic_selected_cancel),
                         contentDescription = null
                     )
-                    Text(text = "More", fontSize = 18.sp, fontFamily = NutinoRegular)
+                    Text(
+                        text = "More",
+                        fontSize = 18.sp,
+                        fontFamily = NutinoRegular,
+                        modifier = Modifier.clickable {
+
+                        })
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
