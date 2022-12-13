@@ -43,6 +43,8 @@ fun HomeScreen(navController: NavHostController) {
     ) {
         Search(search = search, isVisible = isVisible)
 
+        Advertisement()
+
         if (response.value != null) {
             Scaffold(
                 modifier = Modifier.fillMaxSize()

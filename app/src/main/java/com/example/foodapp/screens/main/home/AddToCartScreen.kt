@@ -67,7 +67,7 @@ fun AddToCardScreen() {
                         elevation = 70.dp
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_tomato),
+                            painter = painterResource(id = R.drawable.pizza),
                             contentDescription = null,
                         )
                     }
@@ -77,14 +77,14 @@ fun AddToCardScreen() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Veggie tomato mix",
+                            text = "Пепперони и цыплёнок",
                             fontFamily = NutinoRegular,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                         Text(
-                            text = "1900",
+                            text = "750",
                             color = Orange,
                             fontFamily = NutinoRegular,
                             fontSize = 20.sp
