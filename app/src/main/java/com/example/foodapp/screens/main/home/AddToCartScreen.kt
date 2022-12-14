@@ -1,6 +1,5 @@
 package com.example.foodapp.screens.main.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -14,15 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.foodapp.R
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 
 @Composable
-fun AddToCardScreen() {
+fun AddToCardScreen(
+    navController: NavHostController,
+    icon: String?,
+    name: String?,
+    price: String?
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,10 +71,7 @@ fun AddToCardScreen() {
                         backgroundColor = Color.White,
                         elevation = 70.dp
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.pizza),
-                            contentDescription = null,
-                        )
+                        AsyncImage(model = icon, contentDescription = null)
                     }
                     Column(
                         modifier = Modifier.height(150.dp),
@@ -77,14 +79,14 @@ fun AddToCardScreen() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Пепперони и цыплёнок",
+                            text = name.toString(),
                             fontFamily = NutinoRegular,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                         Text(
-                            text = "750",
+                            text = price.toString(),
                             color = Orange,
                             fontFamily = NutinoRegular,
                             fontSize = 20.sp
@@ -132,10 +134,4 @@ fun AddToCardScreen() {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AddToCardScreenPreview() {
-    AddToCardScreen()
 }

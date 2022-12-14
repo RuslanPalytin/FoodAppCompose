@@ -31,7 +31,11 @@ fun ItemFood(item: FoodModel, navController: NavHostController) {
             .width(150.dp)
             .background(color = Color.Transparent)
             .clickable {
-                navController.navigate(ItemFoodScreen.SelectedItemFood.route)
+                navController.navigate(route = ItemFoodScreen.SelectedItemFood.passItem(
+                    icon = item.icon,
+                    name = item.name,
+                    price = item.price
+                ))
             }
     ) {
         Card(

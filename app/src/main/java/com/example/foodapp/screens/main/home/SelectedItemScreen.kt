@@ -1,7 +1,5 @@
 package com.example.foodapp.screens.main.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -16,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.foodapp.R
 import com.example.foodapp.navigation.ItemFoodScreen
 import com.example.foodapp.ui.theme.GrayLite3
@@ -31,12 +29,17 @@ import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 
 @Composable
-fun SelectedItemScreen(navController: NavHostController) {
+fun SelectedItemScreen(
+    navController: NavHostController,
+    icon: String?,
+    name: String?,
+    price: String?,
+) {
 
     val count = remember { mutableStateOf(1) }
     val decItem = remember { mutableStateOf(true) }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 200.dp, bottom = 100.dp),
@@ -84,10 +87,7 @@ fun SelectedItemScreen(navController: NavHostController) {
                         backgroundColor = Color.White,
                         elevation = 70.dp
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.pizza),
-                            contentDescription = null,
-                        )
+                        AsyncImage(model = icon, contentDescription = null)
                     }
                     Column(
                         modifier = Modifier.height(150.dp),
@@ -95,14 +95,14 @@ fun SelectedItemScreen(navController: NavHostController) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Пепперони и цыплёнок",
+                            text = name.toString(),
                             fontFamily = NutinoRegular,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                         Text(
-                            text = "750",
+                            text = price.toString(),
                             color = Orange,
                             fontFamily = NutinoRegular,
                             fontSize = 20.sp
@@ -164,7 +164,11 @@ fun SelectedItemScreen(navController: NavHostController) {
                                 .fillMaxWidth()
                                 .height(40.dp)
                                 .clickable {
-                                    navController.navigate(ItemFoodScreen.AddToCartItemFood.route)
+                                    navController.navigate(ItemFoodScreen.AddToCartItemFood.passItem(
+                                        icon = icon.toString(),
+                                        name = name.toString(),
+                                        price = price.toString()
+                                    ))
                                 }
                                 .padding(end = 15.dp),
                             backgroundColor = Orange,
@@ -175,7 +179,11 @@ fun SelectedItemScreen(navController: NavHostController) {
                                     .fillMaxWidth()
                                     .padding(horizontal = 20.dp)
                                     .clickable {
-                                        navController.navigate(ItemFoodScreen.AddToCartItemFood.route)
+                                        navController.navigate(ItemFoodScreen.AddToCartItemFood.passItem(
+                                            icon = icon.toString(),
+                                            name = name.toString(),
+                                            price = price.toString()
+                                        ))
                                     },
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
@@ -198,10 +206,4 @@ fun SelectedItemScreen(navController: NavHostController) {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun asdmavs() {
-    //SelectedItemScreen(navController)
 }
