@@ -17,7 +17,6 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.HOME){
             BottomScreen()
         }
-        itemFoodGraph(navController)
     }
 }
 
@@ -25,5 +24,4 @@ object Graph {
     const val ROOT = "root_graph"
     const val ON_BOARDING = "on_boarding_screen"
     const val HOME = "home_graph"
-    const val ITEM = "item_graph"
 }

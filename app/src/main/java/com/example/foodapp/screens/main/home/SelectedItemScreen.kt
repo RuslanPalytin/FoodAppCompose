@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.foodapp.R
+import com.example.foodapp.graphs.Graph
 import com.example.foodapp.navigation.ItemFoodScreen
 import com.example.foodapp.ui.theme.GrayLite3
 import com.example.foodapp.ui.theme.NutinoRegular
@@ -63,7 +64,10 @@ fun SelectedItemScreen(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_selected_cancel),
-                        contentDescription = null
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            navController.navigate(Graph.HOME)
+                        }
                     )
                     Text(
                         text = "More",

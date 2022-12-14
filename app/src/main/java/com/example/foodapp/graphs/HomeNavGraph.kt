@@ -1,14 +1,11 @@
 package com.example.foodapp.graphs
 
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
-import androidx.navigation.navigation
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.navigation.*
 import com.example.foodapp.screens.main.history.HistoryScreen
@@ -31,13 +28,13 @@ fun HomeNavigationGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(route = BottomBarScreen.Shop.route) {
-            ShopScreen()
+            ShopScreen(navController)
         }
         composable(route = BottomBarScreen.Person.route) {
-            PersonScreen()
+            PersonScreen(navController)
         }
         composable(route = BottomBarScreen.History.route) {
-            HistoryScreen()
+            HistoryScreen(navController)
         }
         composable(route = ItemFoodScreen.ItemFood.route) {
             ItemFood(item = FoodModel("", "", "", "", "", ""), navController)
@@ -45,7 +42,7 @@ fun HomeNavigationGraph(navController: NavHostController) {
         composable(
             route = ItemFoodScreen.SelectedItemFood.route,
             arguments = listOf(
-                navArgument(name = SELECTED_ITEM_FOOD_ICON) {type = NavType.StringType},
+                navArgument(name = SELECTED_ITEM_FOOD_ICON) { type = NavType.StringType },
                 navArgument(name = SELECTED_ITEM_FOOD_NAME) { type = NavType.StringType },
                 navArgument(name = SELECTED_ITEM_FOOD_PRICE) { type = NavType.StringType },
             )
@@ -60,9 +57,9 @@ fun HomeNavigationGraph(navController: NavHostController) {
         composable(
             route = ItemFoodScreen.AddToCartItemFood.route,
             arguments = listOf(
-                navArgument(name = SELECTED_ITEM_FOOD_ICON) {type = NavType.StringType},
-                navArgument(name = SELECTED_ITEM_FOOD_NAME) {type = NavType.StringType},
-                navArgument(name = SELECTED_ITEM_FOOD_PRICE) {type = NavType.StringType}
+                navArgument(name = SELECTED_ITEM_FOOD_ICON) { type = NavType.StringType },
+                navArgument(name = SELECTED_ITEM_FOOD_NAME) { type = NavType.StringType },
+                navArgument(name = SELECTED_ITEM_FOOD_PRICE) { type = NavType.StringType }
             )
         ) { backStackEntry ->
             AddToCardScreen(
@@ -71,19 +68,6 @@ fun HomeNavigationGraph(navController: NavHostController) {
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_NAME),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_PRICE),
             )
-        }
-    }
-}
-
-fun NavGraphBuilder.itemFoodGraph(navController: NavHostController) {
-    navigation(route = Graph.ITEM, startDestination = ItemFoodScreen.ItemFood.route) {
-
-        composable(route = ItemFoodScreen.ItemFood.route) {
-            ItemFood(item = FoodModel("", "", "", "", "", ""), navController)
-        }
-
-        composable(route = ItemFoodScreen.SelectedItemFood.route) {
-            //SelectedItemScreen(FoodModel("", "", "", "", "", ""), navController)
         }
     }
 }

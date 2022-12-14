@@ -1,9 +1,6 @@
 package com.example.foodapp.api
 
-import com.example.foodapp.data.FoodModel
-import com.example.foodapp.data.LoginUserModel
-import com.example.foodapp.data.RegisterUserModel
-import com.example.foodapp.data.Token
+import com.example.foodapp.data.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,4 +24,15 @@ interface ApiInterface {
         @Header("Authorization") token: String,
         @Query("version") version: String,
     ): Call<List<FoodModel>?>?
+
+    @GET("api/delivery/orders/histories")
+    fun getOrdersHistory(
+        @Header ("Authorization") token: String
+    ): Call<List<OrderModel>>
+
+    @POST("api/delivery/orders")
+    fun createOrders(
+        @Header ("Authorization") token: String,
+        @Body orderModel: OrderModel
+    ): Call<Unit>
 }

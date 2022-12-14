@@ -20,6 +20,7 @@ fun TabsContent(
     pagerState: PagerState,
     navController: NavHostController
 ) {
+
     HorizontalPager(
         count = tabs.size,
         state = pagerState,

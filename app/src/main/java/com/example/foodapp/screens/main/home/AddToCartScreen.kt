@@ -1,6 +1,7 @@
 package com.example.foodapp.screens.main.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +19,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.foodapp.R
+import com.example.foodapp.api.ApiService
+import com.example.foodapp.graphs.Graph
+import com.example.foodapp.navigation.BottomBarScreen
+import com.example.foodapp.navigation.ItemFoodScreen
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 
@@ -53,7 +58,16 @@ fun AddToCardScreen(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_selected_cancel),
-                        contentDescription = null
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            navController.navigate(
+                                ItemFoodScreen.SelectedItemFood.passItem(
+                                    icon = icon.toString(),
+                                    name = name.toString(),
+                                    price = price.toString()
+                                )
+                            )
+                        }
                     )
                     Text(text = "More", fontSize = 18.sp, fontFamily = NutinoRegular)
                 }
@@ -102,7 +116,7 @@ fun AddToCardScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate(Graph.HOME) },
                         colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
                         shape = RoundedCornerShape(30.dp)
                     ) {
@@ -118,7 +132,18 @@ fun AddToCardScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            navController.navigate(Graph.HOME)
+                            navController.navigate(BottomBarScreen.Shop.route) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
                         shape = RoundedCornerShape(30.dp)
                     ) {

@@ -5,10 +5,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.google.accompanist.pager.ExperimentalPagerApi
+import androidx.navigation.NavHostController
 
 @Composable
-fun ShopScreen() {
+fun ShopScreen(navController: NavHostController) {
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         Text(text = "Shop")
