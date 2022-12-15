@@ -19,4 +19,5 @@ sealed class ItemFoodScreen(var route: String) {
             return "add_to_cart?icon=$icon&name=$name&price=$price"
         }
     }
+    object OneItem : ItemFoodScreen (route = "one_item")
 }

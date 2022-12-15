@@ -9,10 +9,7 @@ import androidx.navigation.compose.navArgument
 import com.example.foodapp.data.FoodModel
 import com.example.foodapp.navigation.*
 import com.example.foodapp.screens.main.history.HistoryScreen
-import com.example.foodapp.screens.main.home.AddToCardScreen
-import com.example.foodapp.screens.main.home.HomeScreen
-import com.example.foodapp.screens.main.home.ItemFood
-import com.example.foodapp.screens.main.home.SelectedItemScreen
+import com.example.foodapp.screens.main.home.*
 import com.example.foodapp.screens.main.person.PersonScreen
 import com.example.foodapp.screens.main.shop.ShopScreen
 
@@ -68,6 +65,9 @@ fun HomeNavigationGraph(navController: NavHostController) {
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_NAME),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_PRICE),
             )
+        }
+        composable(ItemFoodScreen.OneItem.route) {
+            OneItemScreen(navController)
         }
     }
 }
