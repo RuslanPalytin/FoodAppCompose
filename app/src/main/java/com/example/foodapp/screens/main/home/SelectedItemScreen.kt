@@ -1,6 +1,7 @@
 package com.example.foodapp.screens.main.home
 
-import androidx.compose.foundation.background
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -13,21 +14,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.foodapp.R
+import com.example.foodapp.data.FoodModelDb
 import com.example.foodapp.graphs.Graph
 import com.example.foodapp.navigation.ItemFoodScreen
+import com.example.foodapp.storage.DbHandler
 import com.example.foodapp.ui.theme.GrayLite3
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
@@ -42,6 +43,8 @@ fun SelectedItemScreen(
 
     val count = remember { mutableStateOf(1) }
     val decItem = remember { mutableStateOf(true) }
+    val context = LocalContext.current
+    val localDataBase = DbHandler(context)
 
     Box(
         modifier = Modifier
@@ -167,30 +170,53 @@ fun SelectedItemScreen(
                     }
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Card(
+                            backgroundColor = Orange,
+                            shape = RoundedCornerShape(30.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(40.dp)
+                                .padding(end = 15.dp)
                                 .clickable {
-                                    navController.navigate(ItemFoodScreen.AddToCartItemFood.passItem(
-                                        icon = icon.toString(),
-                                        name = name.toString(),
-                                        price = price.toString()
-                                    ))
+
+                                    navController.navigate(
+                                        ItemFoodScreen.AddToCartItemFood.passItem(
+                                            icon = icon.toString(),
+                                            name = name.toString(),
+                                            price = price.toString()
+                                        )
+                                    )
+
+                                    localDataBase.addNewFood(
+                                        FoodModelDb(
+                                            icon = icon.toString(),
+                                            name = name.toString(),
+                                            price = price.toString(),
+                                            count = Integer.parseInt(count.toString())
+                                        )
+                                    )
                                 }
-                                .padding(end = 15.dp),
-                            backgroundColor = Orange,
-                            shape = RoundedCornerShape(30.dp)
                         ) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 20.dp)
                                     .clickable {
-                                        navController.navigate(ItemFoodScreen.AddToCartItemFood.passItem(
-                                            icon = icon.toString(),
-                                            name = name.toString(),
-                                            price = price.toString()
-                                        ))
+                                        navController.navigate(
+                                            ItemFoodScreen.AddToCartItemFood.passItem(
+                                                icon = icon.toString(),
+                                                name = name.toString(),
+                                                price = price.toString()
+                                            )
+                                        )
+
+                                        localDataBase.addNewFood(
+                                            FoodModelDb(
+                                                icon = icon.toString(),
+                                                name = name.toString(),
+                                                price = price.toString(),
+                                                count = count.value
+                                            )
+                                        )
                                     },
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
