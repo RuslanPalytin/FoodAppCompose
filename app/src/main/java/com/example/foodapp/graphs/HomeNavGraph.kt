@@ -39,6 +39,7 @@ fun HomeNavigationGraph(navController: NavHostController) {
         composable(
             route = ItemFoodScreen.SelectedItemFood.route,
             arguments = listOf(
+                navArgument(name = SELECTED_ITEM_FOOD_ID) {type = NavType.StringType},
                 navArgument(name = SELECTED_ITEM_FOOD_ICON) { type = NavType.StringType },
                 navArgument(name = SELECTED_ITEM_FOOD_NAME) { type = NavType.StringType },
                 navArgument(name = SELECTED_ITEM_FOOD_PRICE) { type = NavType.StringType },
@@ -46,6 +47,7 @@ fun HomeNavigationGraph(navController: NavHostController) {
         ) { backStackEntry ->
             SelectedItemScreen(
                 navController,
+                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ID),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ICON),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_NAME),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_PRICE),
@@ -54,6 +56,7 @@ fun HomeNavigationGraph(navController: NavHostController) {
         composable(
             route = ItemFoodScreen.AddToCartItemFood.route,
             arguments = listOf(
+                navArgument(name = SELECTED_ITEM_FOOD_ID) {type = NavType.StringType},
                 navArgument(name = SELECTED_ITEM_FOOD_ICON) { type = NavType.StringType },
                 navArgument(name = SELECTED_ITEM_FOOD_NAME) { type = NavType.StringType },
                 navArgument(name = SELECTED_ITEM_FOOD_PRICE) { type = NavType.StringType }
@@ -61,6 +64,7 @@ fun HomeNavigationGraph(navController: NavHostController) {
         ) { backStackEntry ->
             AddToCardScreen(
                 navController,
+                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ID),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ICON),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_NAME),
                 backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_PRICE),

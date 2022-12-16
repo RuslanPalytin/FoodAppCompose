@@ -28,7 +28,7 @@ interface ApiInterface {
     @GET("api/delivery/orders/histories")
     fun getOrdersHistory(
         @Header ("Authorization") token: String
-    ): Call<List<OrderModel>>
+    ): Call<List<OrderModel>?>?
 
     @POST("api/delivery/orders")
     fun createOrders(

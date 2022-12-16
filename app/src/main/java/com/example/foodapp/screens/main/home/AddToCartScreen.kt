@@ -29,6 +29,7 @@ import com.example.foodapp.ui.theme.Orange
 @Composable
 fun AddToCardScreen(
     navController: NavHostController,
+    id: String?,
     icon: String?,
     name: String?,
     price: String?
@@ -62,6 +63,7 @@ fun AddToCardScreen(
                         modifier = Modifier.clickable {
                             navController.navigate(
                                 ItemFoodScreen.SelectedItemFood.passItem(
+                                    id = id.toString(),
                                     icon = icon.toString(),
                                     name = name.toString(),
                                     price = price.toString()

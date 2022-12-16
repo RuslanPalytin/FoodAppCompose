@@ -11,10 +11,11 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
 
     companion object {
         private const val DB_NAME = "FoodDataBase"
-        private const val DB_VERSION = 1
-        private const val TABLE_NAME = "myDataBase"
+        private const val DB_VERSION = 2
+        private const val TABLE_NAME = "myDataBase2"
 
         private const val ID = "id"
+        private const val FOOD_ID = "food_id"
         private const val FOOD_ICON = "icon"
         private const val FOOD_NAME = "name"
         private const val FOOD_PRICE = "price"
@@ -24,6 +25,7 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
     override fun onCreate(db: SQLiteDatabase) {
         val query = ("CREATE TABLE " + TABLE_NAME + " ("
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FOOD_ID + " TEXT,"
                 + FOOD_ICON + " TEXT,"
                 + FOOD_NAME + " TEXT,"
                 + FOOD_PRICE + " TEXT,"
@@ -35,6 +37,7 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
         val db = this.writableDatabase
         val values = ContentValues()
 
+        values.put(FOOD_ID, item.id)
         values.put(FOOD_ICON, item.icon)
         values.put(FOOD_NAME, item.name)
         values.put(FOOD_PRICE, item.price)
@@ -54,16 +57,44 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
             do {
                 foodModel.add(
                     FoodModelDb(
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getString(4).toInt()
+                        id = cursor.getString(1),
+                        icon = cursor.getString(2),
+                        name = cursor.getString(3),
+                        price = cursor.getString(4),
+                        count = cursor.getString(5).toInt()
                     )
                 )
             } while (cursor.moveToNext())
         }
         cursor.close()
         return foodModel
+    }
+
+    fun deleteFood(foodId: String) {
+        val db = this.writableDatabase
+        db.delete(TABLE_NAME, "$FOOD_ID=?", arrayOf(foodId))
+        db.close()
+    }
+
+    fun deleteAllFoods(items: MutableList<FoodModelDb>) {
+        val db = this.writableDatabase
+        for(i in 0 until items.size){
+            db.delete(TABLE_NAME, "$FOOD_ID=?", arrayOf(items[i].id))
+        }
+    }
+
+    fun updateFood(newCount: Int ,foodModel: FoodModelDb) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+
+        values.put(FOOD_ID, foodModel.id)
+        values.put(FOOD_ICON, foodModel.icon)
+        values.put(FOOD_NAME, foodModel.name)
+        values.put(FOOD_PRICE, foodModel.price)
+        values.put(FOOD_COUNT, foodModel.count)
+
+        db.update(TABLE_NAME, values, "$FOOD_COUNT=?", arrayOf(newCount.toString()))
+        db.close()
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

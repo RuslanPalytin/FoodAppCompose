@@ -1,7 +1,5 @@
 package com.example.foodapp.screens.main.home
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -32,15 +30,16 @@ import com.example.foodapp.storage.DbHandler
 import com.example.foodapp.ui.theme.GrayLite3
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
+import kotlin.random.Random
 
 @Composable
 fun SelectedItemScreen(
     navController: NavHostController,
+    id: String?,
     icon: String?,
     name: String?,
     price: String?,
 ) {
-
     val count = remember { mutableStateOf(1) }
     val decItem = remember { mutableStateOf(true) }
     val context = LocalContext.current
@@ -180,6 +179,7 @@ fun SelectedItemScreen(
 
                                     navController.navigate(
                                         ItemFoodScreen.AddToCartItemFood.passItem(
+                                            id = id.toString(),
                                             icon = icon.toString(),
                                             name = name.toString(),
                                             price = price.toString()
@@ -188,10 +188,11 @@ fun SelectedItemScreen(
 
                                     localDataBase.addNewFood(
                                         FoodModelDb(
+                                            id = id.toString(),
                                             icon = icon.toString(),
                                             name = name.toString(),
                                             price = price.toString(),
-                                            count = Integer.parseInt(count.toString())
+                                            count = count.value
                                         )
                                     )
                                 }
@@ -203,6 +204,7 @@ fun SelectedItemScreen(
                                     .clickable {
                                         navController.navigate(
                                             ItemFoodScreen.AddToCartItemFood.passItem(
+                                                id = id.toString(),
                                                 icon = icon.toString(),
                                                 name = name.toString(),
                                                 price = price.toString()
@@ -211,6 +213,7 @@ fun SelectedItemScreen(
 
                                         localDataBase.addNewFood(
                                             FoodModelDb(
+                                                id = id.toString(),
                                                 icon = icon.toString(),
                                                 name = name.toString(),
                                                 price = price.toString(),
