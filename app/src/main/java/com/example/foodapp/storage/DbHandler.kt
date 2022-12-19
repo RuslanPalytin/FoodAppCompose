@@ -5,14 +5,16 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import androidx.compose.runtime.MutableState
 import com.example.foodapp.data.FoodModelDb
 
 class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
-        private const val DB_NAME = "FoodDataBase"
+        private const val DB_NAME = "DataBase.db"
         private const val DB_VERSION = 2
-        private const val TABLE_NAME = "myDataBase2"
+        private const val TABLE_NAME = "myDataBase"
 
         private const val ID = "id"
         private const val FOOD_ID = "food_id"
@@ -47,7 +49,7 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
         db.close()
     }
 
-    fun readFoods(): MutableList<FoodModelDb>? {
+    fun readFoods(): MutableList<FoodModelDb> {
         val db = this.readableDatabase
 
         val cursor: Cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
@@ -61,7 +63,7 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
                         icon = cursor.getString(2),
                         name = cursor.getString(3),
                         price = cursor.getString(4),
-                        count = cursor.getString(5).toInt()
+                        count = cursor.getInt(5)
                     )
                 )
             } while (cursor.moveToNext())
@@ -83,7 +85,7 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
         }
     }
 
-    fun updateFood(newCount: Int ,foodModel: FoodModelDb) {
+    fun updateFood(newCount: MutableState<Int>, foodModel: FoodModelDb) {
         val db = this.writableDatabase
         val values = ContentValues()
 
@@ -93,7 +95,10 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
         values.put(FOOD_PRICE, foodModel.price)
         values.put(FOOD_COUNT, foodModel.count)
 
-        db.update(TABLE_NAME, values, "$FOOD_COUNT=?", arrayOf(newCount.toString()))
+        db.update(TABLE_NAME, values, "count=?", arrayOf(newCount.value.toString()))
+
+        Log.d("MyLog", values.toString())
+
         db.close()
     }
 

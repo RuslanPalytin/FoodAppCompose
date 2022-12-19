@@ -34,7 +34,7 @@ import com.example.foodapp.ui.theme.Orange
 fun ItemFoodOrder(item: FoodModelDb) {
 
     val context = LocalContext.current
-    var count by remember { mutableStateOf(item.count)}
+    val count = remember { mutableStateOf(item.count)}
     var decItem by remember { mutableStateOf(true)}
     val db = DbHandler(context)
 
@@ -84,10 +84,14 @@ fun ItemFoodOrder(item: FoodModelDb) {
                 Spacer(modifier = Modifier.height(3.dp))
                 Row() {
 
-                    decItem = count > 1
+                    decItem = count.value > 1
 
                     Card(
-                        modifier = Modifier.size(28.dp),
+                        modifier = Modifier.size(28.dp)
+                            .clickable(enabled = decItem) {
+                                count.value--
+                                db.updateFood(newCount = count, foodModel = item)
+                        },
                         backgroundColor = GrayLite3,
                         shape = RoundedCornerShape(6.dp)
                     ) {
@@ -95,17 +99,22 @@ fun ItemFoodOrder(item: FoodModelDb) {
                             modifier = Modifier
                                 .padding(8.dp)
                                 .clickable(enabled = decItem) {
-                                    count--
+                                    count.value--
+                                    db.updateFood(newCount = count, foodModel = item)
                                 },
                             painter = painterResource(id = R.drawable.ic_minus),
                             contentDescription = null,
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = count.toString(), color = Color.Gray, fontSize = 16.sp)
+                    Text(text = count.value.toString(), color = Color.Gray, fontSize = 16.sp)
                     Spacer(modifier = Modifier.width(8.dp))
                     Card(
-                        modifier = Modifier.size(28.dp),
+                        modifier = Modifier.size(28.dp)
+                            .clickable(enabled = decItem) {
+                                count.value--
+                                db.updateFood(newCount = count, foodModel = item)
+                            },
                         backgroundColor = GrayLite3,
                         shape = RoundedCornerShape(6.dp),
                     ) {
@@ -113,7 +122,7 @@ fun ItemFoodOrder(item: FoodModelDb) {
                             modifier = Modifier
                                 .padding(8.dp)
                                 .clickable {
-                                    count++
+                                    count.value++
                                     db.updateFood(newCount = count, foodModel = item)
                                 },
                             painter = painterResource(id = R.drawable.ic_plus),
