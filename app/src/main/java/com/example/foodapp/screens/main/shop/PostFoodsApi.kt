@@ -13,7 +13,6 @@ fun postFoods(items: OrderModel, context: Context) {
 
     val token = SharedPreference(context).readToken()
 
-
     ApiService.retrofit.createOrders(token = "Bearer $token", orderModel = items).enqueue(object : Callback<Unit> {
         override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
             if(response.isSuccessful){

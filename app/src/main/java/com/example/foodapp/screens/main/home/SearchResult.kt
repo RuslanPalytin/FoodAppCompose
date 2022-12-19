@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.foodapp.data.FoodModel
+import com.example.foodapp.screens.main.home.homescreens.ShowFoodList
 import com.example.foodapp.ui.theme.GrayLite1
 import com.example.foodapp.ui.theme.NutinoRegular
 
@@ -37,7 +39,10 @@ fun SearchResult(search: MutableState<String>, navController: NavHostController)
             }
 
         if (listFood.isNotEmpty()) {
-            ShowFoodList(list = listFood, navController = navController)
+            ShowFoodList(
+                list = listFood,
+                navControllerHome = navController
+            )
         } else {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = "Empty", fontSize = 40.sp, fontFamily = NutinoRegular)

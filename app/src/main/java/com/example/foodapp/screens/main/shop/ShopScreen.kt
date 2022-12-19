@@ -24,6 +24,7 @@ import com.example.foodapp.storage.DbHandler
 import com.example.foodapp.R
 import com.example.foodapp.data.DishesModel
 import com.example.foodapp.data.OrderModel
+import com.example.foodapp.screens.main.history.HistoryPlaceHolder
 import com.example.foodapp.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,7 +36,12 @@ fun ShopScreen(navController: NavHostController) {
     val db = DbHandler(context)
     val foodList: MutableList<FoodModelDb> = db.readFoods()!!
     var address by remember { mutableStateOf("") }
+    val totalPrice = remember { mutableStateOf(0)}
     val defaultText = "ул. Большевитская, 68/1"
+
+    for(i in 0 until db.readFoods()!!.size) {
+        totalPrice.value += db.readFoods()!![i].price.toInt() * db.readFoods()!![i].count
+    }
 
     Column(
         modifier = Modifier
@@ -76,55 +82,59 @@ fun ShopScreen(navController: NavHostController) {
             )
         }
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxHeight(0.3f)
-                .background(color = GrayLite2),
-            content = {
-                itemsIndexed(foodList) { index, item ->
-                    ItemFoodOrder(item = item)
+        if(totalPrice.value == 0) {
+            ShopPlaceholder()
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxHeight(0.3f)
+                    .background(color = GrayLite2),
+                content = {
+                    itemsIndexed(foodList) { index, item ->
+                        ItemFoodOrder(item = item)
+                    }
                 }
-            }
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        Text(text = "Дополнительно", fontSize = 22.sp, modifier = Modifier.padding(start = 10.dp))
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = GrayLite2),
-            content = {
-                items(10) {
-                    ItemAdditionally()
-                }
-            }
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        OrderPrice()
-        Spacer(modifier = Modifier.height(30.dp))
-        Button(
-            onClick = {
-                onClickOrderNow(
-                    foodList = foodList,
-                    address = if(address != "") address else defaultText,
-                    context = context
-                )
-                db.deleteAllFoods(items = foodList)
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 25.dp)
-                .height(70.dp),
-            shape = RoundedCornerShape(30.dp)
-        ) {
-            Text(
-                text = "Order Now",
-                fontFamily = NutinoRegular,
-                fontSize = 17.sp,
-                color = Color.White
             )
-        }
+            Spacer(modifier = Modifier.height(30.dp))
+            Text(text = "Дополнительно", fontSize = 22.sp, modifier = Modifier.padding(start = 10.dp))
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = GrayLite2),
+                content = {
+                    items(10) {
+                        ItemAdditionally()
+                    }
+                }
+            )
+            Spacer(modifier = Modifier.height(30.dp))
+            OrderPrice(totalPrice)
+            Spacer(modifier = Modifier.height(30.dp))
+            Button(
+                onClick = {
+                    onClickOrderNow(
+                        foodList = foodList,
+                        address = if(address != "") address else defaultText,
+                        context = context
+                    )
+                    db.deleteAllFoods(items = foodList)
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 25.dp)
+                    .height(70.dp),
+                shape = RoundedCornerShape(30.dp)
+            ) {
+                Text(
+                    text = "Order Now",
+                    fontFamily = NutinoRegular,
+                    fontSize = 17.sp,
+                    color = Color.White
+                )
+            }
 
+        }
     }
 }
 
@@ -154,7 +164,7 @@ fun onClickOrderNow(foodList: MutableList<FoodModelDb>, address: String, context
 }
 
 @Composable
-fun OrderPrice() {
+fun OrderPrice(totalPrice: MutableState<Int>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +183,7 @@ fun OrderPrice() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Order Price", color = Color.White, fontFamily = NutinoRegular)
-            Text(text = "20000$$", color = Color.White, fontFamily = NutinoRegular)
+            Text(text = totalPrice.value.toString() + "$$", color = Color.White, fontFamily = NutinoRegular)
         }
     }
 }

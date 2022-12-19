@@ -2,28 +2,24 @@ package com.example.foodapp.screens.main.history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.foodapp.R
 import com.example.foodapp.data.OrderModel
+import com.example.foodapp.navigation.HistorySealedScreen
 import com.example.foodapp.ui.theme.GrayLite2
-import com.example.foodapp.ui.theme.GrayLite3
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 
@@ -32,6 +28,8 @@ fun ItemListHistory(item: OrderModel, historyNavController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+            .padding(top = 10.dp)
             .clickable {
                 historyNavController.navigate(HistorySealedScreen.HistoryOpenScreen.route)
             },
@@ -50,7 +48,6 @@ fun ItemListHistory(item: OrderModel, historyNavController: NavHostController) {
                 Text(text = item.address, color = Color.Gray, textAlign = TextAlign.Center)
                 Text(text = item.date, color = Color.Gray)
             }
-
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

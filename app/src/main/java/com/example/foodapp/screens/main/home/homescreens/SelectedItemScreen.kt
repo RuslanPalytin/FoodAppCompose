@@ -1,5 +1,6 @@
-package com.example.foodapp.screens.main.home
+package com.example.foodapp.screens.main.home.homescreens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -25,16 +26,17 @@ import coil.compose.AsyncImage
 import com.example.foodapp.R
 import com.example.foodapp.data.FoodModelDb
 import com.example.foodapp.graphs.Graph
+import com.example.foodapp.navigation.HomeSealedScreen
 import com.example.foodapp.navigation.ItemFoodScreen
 import com.example.foodapp.storage.DbHandler
 import com.example.foodapp.ui.theme.GrayLite3
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
-import kotlin.random.Random
 
 @Composable
 fun SelectedItemScreen(
-    navController: NavHostController,
+    navControllerHome: NavHostController,
+    navControllerRoot: NavHostController,
     id: String?,
     icon: String?,
     name: String?,
@@ -45,15 +47,16 @@ fun SelectedItemScreen(
     val context = LocalContext.current
     val localDataBase = DbHandler(context)
 
-    Box(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 200.dp, bottom = 100.dp)
+            .fillMaxSize()
+            .background(Color.Transparent)
+            .padding(horizontal = 10.dp)
+            .padding(top = 15.dp),
     ) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
+                .fillMaxWidth(),
             shape = RoundedCornerShape(30.dp),
             backgroundColor = Color.White,
             elevation = 5.dp
@@ -62,8 +65,8 @@ fun SelectedItemScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 10.dp)
-                        .padding(horizontal = 25.dp),
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -71,7 +74,7 @@ fun SelectedItemScreen(
                         painter = painterResource(id = R.drawable.ic_selected_cancel),
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            navController.navigate(Graph.HOME)
+                            navControllerRoot.navigate(Graph.HOME)
                         }
                     )
                     Text(
@@ -79,7 +82,7 @@ fun SelectedItemScreen(
                         fontSize = 18.sp,
                         fontFamily = NutinoRegular,
                         modifier = Modifier.clickable {
-                            navController.navigate(ItemFoodScreen.OneItem.route)
+                            navControllerRoot.navigate(ItemFoodScreen.OneItem.route)
                         })
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -177,8 +180,8 @@ fun SelectedItemScreen(
                                 .padding(end = 15.dp)
                                 .clickable {
 
-                                    navController.navigate(
-                                        ItemFoodScreen.AddToCartItemFood.passItem(
+                                    navControllerHome.navigate(
+                                        HomeSealedScreen.AddFoodScreen.passItem(
                                             id = id.toString(),
                                             icon = icon.toString(),
                                             name = name.toString(),
@@ -202,8 +205,8 @@ fun SelectedItemScreen(
                                     .fillMaxWidth()
                                     .padding(horizontal = 20.dp)
                                     .clickable {
-                                        navController.navigate(
-                                            ItemFoodScreen.AddToCartItemFood.passItem(
+                                        navControllerHome.navigate(
+                                            HomeSealedScreen.AddFoodScreen.passItem(
                                                 id = id.toString(),
                                                 icon = icon.toString(),
                                                 name = name.toString(),

@@ -1,4 +1,4 @@
-package com.example.foodapp.screens.main.home
+package com.example.foodapp.screens.main.home.homescreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,16 +19,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.foodapp.R
-import com.example.foodapp.api.ApiService
 import com.example.foodapp.graphs.Graph
 import com.example.foodapp.navigation.BottomBarScreen
-import com.example.foodapp.navigation.ItemFoodScreen
+import com.example.foodapp.navigation.HomeSealedScreen
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 
 @Composable
 fun AddToCardScreen(
-    navController: NavHostController,
+    navControllerHome: NavHostController,
+    navControllerRoot: NavHostController,
     id: String?,
     icon: String?,
     name: String?,
@@ -38,12 +38,12 @@ fun AddToCardScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Transparent)
-            .padding(top = 200.dp, bottom = 100.dp),
+            .padding(horizontal = 10.dp)
+            .padding(top = 15.dp),
     ) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
+                .fillMaxWidth(),
             shape = RoundedCornerShape(30.dp),
             backgroundColor = Color.White,
             elevation = 5.dp
@@ -61,8 +61,8 @@ fun AddToCardScreen(
                         painter = painterResource(id = R.drawable.ic_selected_cancel),
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            navController.navigate(
-                                ItemFoodScreen.SelectedItemFood.passItem(
+                            navControllerHome.navigate(
+                                HomeSealedScreen.SelectedItemScreen.passItem(
                                     id = id.toString(),
                                     icon = icon.toString(),
                                     name = name.toString(),
@@ -118,7 +118,7 @@ fun AddToCardScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                        onClick = { navController.navigate(Graph.HOME) },
+                        onClick = { navControllerRoot.navigate(Graph.HOME) },
                         colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
                         shape = RoundedCornerShape(30.dp)
                     ) {
@@ -135,9 +135,9 @@ fun AddToCardScreen(
                             .fillMaxWidth()
                             .height(40.dp),
                         onClick = {
-                            navController.navigate(Graph.HOME)
-                            navController.navigate(BottomBarScreen.Shop.route) {
-                                navController.graph.startDestinationRoute?.let { route ->
+                            navControllerRoot.navigate(Graph.HOME)
+                            navControllerRoot.navigate(BottomBarScreen.Shop.route) {
+                                navControllerRoot.graph.startDestinationRoute?.let { route ->
                                     popUpTo(route) {
                                         saveState = true
                                     }

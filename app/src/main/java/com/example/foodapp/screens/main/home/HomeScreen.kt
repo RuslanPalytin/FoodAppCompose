@@ -1,10 +1,7 @@
 package com.example.foodapp.screens.main.home
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -61,23 +58,6 @@ fun HomeScreen(navController: NavHostController) {
                 }
             }
         }
-
         Spacer(modifier = Modifier.width(30.dp))
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun ShowFoodList(list: List<FoodModel>, navController: NavHostController) {
-    LazyVerticalGrid(
-        modifier = Modifier.padding(top = 10.dp),
-        cells = GridCells.Fixed(2),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
-        verticalArrangement = Arrangement.spacedBy(30.dp),
-    ) {
-        items(list.size) { index ->
-            ItemFood(item = list[index], navController = navController)
-        }
     }
 }

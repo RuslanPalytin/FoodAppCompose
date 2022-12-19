@@ -33,43 +33,6 @@ fun HomeNavigationGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.History.route) {
             HistoryScreen(navController)
         }
-        composable(route = ItemFoodScreen.ItemFood.route) {
-            ItemFood(item = FoodModel("", "", "", "", "", ""), navController)
-        }
-        composable(
-            route = ItemFoodScreen.SelectedItemFood.route,
-            arguments = listOf(
-                navArgument(name = SELECTED_ITEM_FOOD_ID) {type = NavType.StringType},
-                navArgument(name = SELECTED_ITEM_FOOD_ICON) { type = NavType.StringType },
-                navArgument(name = SELECTED_ITEM_FOOD_NAME) { type = NavType.StringType },
-                navArgument(name = SELECTED_ITEM_FOOD_PRICE) { type = NavType.StringType },
-            )
-        ) { backStackEntry ->
-            SelectedItemScreen(
-                navController,
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ID),
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ICON),
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_NAME),
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_PRICE),
-            )
-        }
-        composable(
-            route = ItemFoodScreen.AddToCartItemFood.route,
-            arguments = listOf(
-                navArgument(name = SELECTED_ITEM_FOOD_ID) {type = NavType.StringType},
-                navArgument(name = SELECTED_ITEM_FOOD_ICON) { type = NavType.StringType },
-                navArgument(name = SELECTED_ITEM_FOOD_NAME) { type = NavType.StringType },
-                navArgument(name = SELECTED_ITEM_FOOD_PRICE) { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            AddToCardScreen(
-                navController,
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ID),
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_ICON),
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_NAME),
-                backStackEntry.arguments?.getString(SELECTED_ITEM_FOOD_PRICE),
-            )
-        }
         composable(ItemFoodScreen.OneItem.route) {
             OneItemScreen(navController)
         }

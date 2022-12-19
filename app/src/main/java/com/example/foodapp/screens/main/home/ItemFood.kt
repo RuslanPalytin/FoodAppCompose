@@ -18,20 +18,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.foodapp.data.FoodModel
+import com.example.foodapp.navigation.HomeSealedScreen
 import com.example.foodapp.navigation.ItemFoodScreen
 import com.example.foodapp.ui.theme.NutinoRegular
 import com.example.foodapp.ui.theme.Orange
 import com.example.foodapp.ui.theme.Roboto
 
 @Composable
-fun ItemFood(item: FoodModel, navController: NavHostController) {
+fun ItemFood(item: FoodModel, navControllerHome: NavHostController) {
     Box(
         modifier = Modifier
             .height(270.dp)
             .width(150.dp)
             .background(color = Color.Transparent)
             .clickable {
-                navController.navigate(route = ItemFoodScreen.SelectedItemFood.passItem(
+                navControllerHome.navigate(route = HomeSealedScreen.SelectedItemScreen.passItem(
                     id = item.id,
                     icon = item.icon,
                     name = item.name,

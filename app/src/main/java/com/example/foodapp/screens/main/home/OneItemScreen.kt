@@ -1,5 +1,6 @@
 package com.example.foodapp.screens.main.home
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,8 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -25,7 +24,9 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.foodapp.R
 import com.example.foodapp.data.FoodModel
+import com.example.foodapp.data.FoodModelDb
 import com.example.foodapp.graphs.Graph
+import com.example.foodapp.storage.DbHandler
 import com.example.foodapp.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -102,7 +103,11 @@ fun OneItemScreen(navController: NavHostController) {
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { addToCart(
+                        context = context,
+                        item = response.value!![count.value]
+                    )
+                    },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
                     shape = RoundedCornerShape(30.dp),
                     modifier = Modifier
@@ -145,6 +150,18 @@ fun ItemInfo(name: String?, price: String?) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(text = price.toString(), fontFamily = NutinoRegular, fontSize = 22.sp, color = Orange)
     }
+}
+
+fun addToCart(context: Context, item: FoodModel) {
+    DbHandler(context).addNewFood(
+        FoodModelDb(
+            id = item.id,
+            icon = item.icon,
+            name = item.name,
+            price = item.price,
+            count = 1
+        )
+    )
 }
 
 @Preview
