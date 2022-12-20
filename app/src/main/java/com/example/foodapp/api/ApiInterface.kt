@@ -25,14 +25,14 @@ interface ApiInterface {
         @Query("version") version: String,
     ): Call<List<FoodModel>?>?
 
-    @GET("api/delivery/orders/histories")
-    fun getOrdersHistory(
-        @Header ("Authorization") token: String
-    ): Call<List<OrderModel>?>?
-
     @POST("api/delivery/orders")
     fun createOrders(
         @Header ("Authorization") token: String,
-        @Body orderModel: OrderModel
+        @Body orderModel: OrderCreateModel
     ): Call<Unit>
+
+    @GET("api/delivery/orders/histories")
+    fun getOrdersHistory(
+        @Header ("Authorization") token: String
+    ): Call<List<OrderGetModel>?>?
 }

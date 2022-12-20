@@ -43,7 +43,6 @@ fun SplashScreen(navController: NavHostController) {
         )
     }
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Center) {
-
         Image(
             modifier = Modifier
                 .fillMaxWidth()

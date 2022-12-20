@@ -9,6 +9,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -17,21 +18,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.foodapp.data.OrderModel
+import com.example.foodapp.data.DishesGetModel
+import com.example.foodapp.data.OrderGetModel
 import com.example.foodapp.navigation.HistorySealedScreen
-import com.example.foodapp.ui.theme.GrayLite2
-import com.example.foodapp.ui.theme.NutinoRegular
-import com.example.foodapp.ui.theme.Orange
+import com.example.foodapp.ui.theme.*
 
 @Composable
-fun ItemListHistory(item: OrderModel, historyNavController: NavHostController) {
+fun ItemListHistory(item: OrderGetModel, historyNavController: NavHostController, index: Int) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .padding(top = 10.dp)
             .clickable {
-                historyNavController.navigate(HistorySealedScreen.HistoryOpenScreen.route)
+                historyNavController.navigate(
+                    HistorySealedScreen.HistoryOpenScreen.passPosition(
+                        position = index,
+                        addressAndDate = item.address + " " + item.date,
+                        totalPrice = item.totalPrice
+                    )
+                )
             },
         backgroundColor = Color(0xFFD9D9D9),
         shape = RoundedCornerShape(20.dp)
@@ -45,31 +51,54 @@ fun ItemListHistory(item: OrderModel, historyNavController: NavHostController) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = item.address, color = Color.Gray, textAlign = TextAlign.Center)
-                Text(text = item.date, color = Color.Gray)
+                Text(
+                    text = item.address,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    fontFamily = Roboto,
+                    fontSize = 18.sp
+                )
+                Text(
+                    text = item.date,
+                    color = Color.Gray,
+                    fontFamily = Roboto,
+                    fontSize = 18.sp
+                )
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Cost", color = Color.Gray, textAlign = TextAlign.Center)
-                Text(text = "20000$$", color = Color.Gray)
+                Text(
+                    text = "Cost",
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    fontFamily = NutinoRegular,
+                    fontSize = 17.sp
+                )
+                Text(
+                    text = item.totalPrice,
+                    color = Color.Gray,
+                    fontFamily = NutinoRegular,
+                    fontSize = 17.sp
+                )
             }
         }
     }
 }
 
 @Composable
-fun ItemOpenHistory(item: OrderModel) {
+fun ItemOpenHistory(item: DishesGetModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 30.dp)
-            .background(color = GrayLite2)
+            .padding(top = 10.dp)
+            .background(color = GrayLite1)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = CenterVertically
         ) {
             Card(
                 shape = CircleShape,
@@ -77,26 +106,41 @@ fun ItemOpenHistory(item: OrderModel) {
                     .size(100.dp)
                     .padding(10.dp)
             ) {
-                AsyncImage(model = item, contentDescription = null)
+                AsyncImage(model = item.dish.icon, contentDescription = null)
             }
+            Spacer(modifier = Modifier.width(10.dp))
             Column(
-                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "item.name",
+                    text = item.dish.name,
                     fontFamily = NutinoRegular,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(7.dp))
-                Text(
-                    text = "item.price",
-                    textAlign = TextAlign.Center,
-                    color = Orange,
-                    fontFamily = NutinoRegular,
-                    fontSize = 15.sp
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        text = item.dish.price,
+                        textAlign = TextAlign.Center,
+                        color = Orange,
+                        fontFamily = NutinoRegular,
+                        fontSize = 15.sp
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = item.count,
+                            textAlign = TextAlign.Center,
+                            color = Color.Gray
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(3.dp))
             }
         }

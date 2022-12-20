@@ -49,6 +49,25 @@ class DbHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_
         db.close()
     }
 
+    fun addAllNewFood(items: MutableList<FoodModelDb>) {
+        val db = this.writableDatabase
+
+        for(i in 0 until items.size){
+
+            val values = ContentValues()
+
+            values.put(FOOD_ID, items[i].id)
+            values.put(FOOD_ICON, items[i].icon)
+            values.put(FOOD_NAME, items[i].name)
+            values.put(FOOD_PRICE, items[i].price)
+            values.put(FOOD_COUNT, items[i].count)
+
+            db.insert(TABLE_NAME, null, values)
+        }
+
+        db.close()
+    }
+
     fun readFoods(): MutableList<FoodModelDb> {
         val db = this.readableDatabase
 

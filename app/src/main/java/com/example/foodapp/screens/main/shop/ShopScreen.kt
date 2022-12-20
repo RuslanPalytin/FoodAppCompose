@@ -22,9 +22,8 @@ import androidx.navigation.NavHostController
 import com.example.foodapp.data.FoodModelDb
 import com.example.foodapp.storage.DbHandler
 import com.example.foodapp.R
-import com.example.foodapp.data.DishesModel
-import com.example.foodapp.data.OrderModel
-import com.example.foodapp.screens.main.history.HistoryPlaceHolder
+import com.example.foodapp.data.DishesCreateModel
+import com.example.foodapp.data.OrderCreateModel
 import com.example.foodapp.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -115,7 +114,8 @@ fun ShopScreen(navController: NavHostController) {
                     onClickOrderNow(
                         foodList = foodList,
                         address = if(address != "") address else defaultText,
-                        context = context
+                        context = context,
+                        totalPrice = totalPrice
                     )
                     db.deleteAllFoods(items = foodList)
                 },
@@ -139,26 +139,32 @@ fun ShopScreen(navController: NavHostController) {
 }
 
 @SuppressLint("SimpleDateFormat")
-fun onClickOrderNow(foodList: MutableList<FoodModelDb>, address: String, context: Context) {
+fun onClickOrderNow(
+    foodList: MutableList<FoodModelDb>,
+    address: String,
+    context: Context,
+    totalPrice: MutableState<Int>
+) {
 
-    val dishesList: MutableList<DishesModel> = mutableListOf()
+    val dishesList: MutableList<DishesCreateModel> = mutableListOf()
 
     for(i in 0 until foodList.size) {
         dishesList.add(
-            DishesModel(
+            DishesCreateModel(
                 id = foodList[i].id,
                 count = foodList[i].count.toString()
-        )
+            )
         )
     }
 
     val unixTime: Int = (Date().time / 1000).toInt()
     val date = SimpleDateFormat("dd.MM.yyyy HH:mm")
     date.timeZone = TimeZone.getTimeZone("Europe/Moscow")
-    val orderModel = OrderModel(
+    val orderModel = OrderCreateModel(
         address = address,
         date = date.format(unixTime * 1000L),
-        dishes = dishesList
+        dishes = dishesList,
+        totalPrice = totalPrice.value.toString()
     )
     postFoods(orderModel, context)
 }
